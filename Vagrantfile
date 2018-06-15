@@ -10,8 +10,8 @@
 
 Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu/xenial64"
-  config.vm.synced_folder ".", "/vagrant" #, mount_options: ["dmode=700,fmode=600"]
-  # executing script to put public key to authorized_keys in vagrant guest
+  config.vm.synced_folder ".", "/vagrant" , mount_options: ["dmode=700,fmode=600"]
+  #executing script to put public key to authorized_keys in vagrant guest
   #config.vm.provision "shell", inline: $script
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
@@ -57,7 +57,7 @@ Vagrant.configure("2") do |config|
     leader.vm.provision "shell", path: "bootstrap.sh"
     leader.vm.provision "shell", inline: "ansible-playbook /vagrant/ansible/playjenkins.yml -c local"
     leader.vm.provision "shell", inline: "ansible-playbook /vagrant/ansible/playnexus.yml"
-    leader.vm.provision "shell", inline: "ansible-playbook /vagrant/ansible/playgitlab.yml"
+#    leader.vm.provision "shell", inline: "ansible-playbook /vagrant/ansible/playgitlab.yml"
   end
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box

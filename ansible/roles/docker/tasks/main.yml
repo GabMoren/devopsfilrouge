@@ -29,9 +29,6 @@
 
 - name: Python-pip script
   script: get-pip.py
-#- name: Python-pip is present
-#  apt: name=python-pip state=present
-  run_once: true
   tags: [docker]
 
 - name: Debian docker-py is present

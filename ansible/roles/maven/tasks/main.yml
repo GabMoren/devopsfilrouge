@@ -31,6 +31,7 @@
    
   - name: Exports/Run maven env file for make M2_HOME available globally
     shell: ". /etc/profile.d/maven.sh"
+
   - name: Settings.xml to maven home
     copy:
       src: settings.xml
@@ -38,5 +39,5 @@
       owner: 501
       group: staff
       mode: 0644
-#  when: maven_installed.stdout == ""
+  when: maven_installed.stdout == ""
   tags: [maven]

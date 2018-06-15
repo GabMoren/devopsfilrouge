@@ -4,4 +4,4 @@
   roles:
     - docker
     - nexus
-    - sonar
+#    - sonar
