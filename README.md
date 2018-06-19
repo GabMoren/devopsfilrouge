@@ -1,12 +1,13 @@
-﻿# Projet fil rouge realisé au m2i formation
-**Ce projet consiste à l'installation des 3 outils principaux : Ansible, Jenkins et Docker; sur une machine virtuel "leader" crée avec Vagrant.**
+# Projet fil rouge realisé au m2i formation
+## Introduction
+Ce projet consiste à l'installation des 3 outils principaux : Ansible, Jenkins et Docker; sur une machine virtuel "leader" crée avec Vagrant.
 ## Envirenement avec Vagrant
 Vagrantfile crée 4 machines virtueles :
 
--leader : avec jenkins, ansible, docker et maven
--mvnexus : pour le repository nexus
--mvgitlab : pour l'installation du gitlab (optional)
--mvcible : infra cible pour le deploiement des conteneurs avec ansible depuis le leader
+- leader : avec jenkins, ansible, docker et maven
+- mvnexus : pour le repository nexus
+- mvgitlab : pour l'installation du gitlab (optional)
+- mvcible : infra cible pour le deploiement des conteneurs avec ansible depuis le leader
 
 Pour lancer les machines il suffit de faure un `vagrant up`
 
