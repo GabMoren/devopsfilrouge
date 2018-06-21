@@ -27,8 +27,16 @@
     force: yes
   tags: [docker]
 
+- name: check pip already installed
+  command: "pip --version"
+  ignore_errors: true
+  changed_when: false
+  check_mode: no
+  register: pip_is_installed
+
 - name: Python-pip script
   script: get-pip.py
+  when: pip_is_installed.rc != 0
   tags: [docker]
 
 - name: Debian docker-py is present

@@ -17,7 +17,7 @@ Vagrant.configure("2") do |config|
     v.memory = 2048
   end
   
-  config.vm.define :mvgitlab do |mvgitlab|
+  config.vm.define :mvgitlab, autostart: false do |mvgitlab|
     mvgitlab.vm.network :forwarded_port, host: 2202, guest: 22, id: "ssh", auto_correct: true
     mvgitlab.vm.network "private_network", ip: "192.168.33.102"
     mvgitlab.vm.hostname = "mvgitlab"
@@ -29,6 +29,7 @@ Vagrant.configure("2") do |config|
     v.memory = 4096
     end
   end
+
   config.vm.define :mvnexus do |mvnexus|
     mvnexus.vm.network :forwarded_port, host: 2203, guest: 22, id: "ssh", auto_correct: true
     mvnexus.vm.network "private_network", ip: "192.168.33.103"
@@ -41,24 +42,32 @@ Vagrant.configure("2") do |config|
     v.memory = 4096
     end
   end
-  config.vm.define :mvcible do |mvcible|
-    mvcible.vm.network :forwarded_port, host: 2204, guest: 22, id: "ssh", auto_correct: true
-    mvcible.vm.network "private_network", ip: "192.168.33.120"
-    mvcible.vm.hostname = "mvcible"
-    mvcible.vm.provision "shell", inline: <<-SCRIPT
-      echo "vagrant ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-      apt-get update && apt-get install -y python
-    SCRIPT
+
+  (1..3).each do |i|
+    config.vm.define "mvcible#{i}" do |mvcible|
+      mvcible.vm.network :forwarded_port, host: "220#{i+4}", guest: 22, id: "ssh", auto_correct: true
+      mvcible.vm.network "private_network", ip: "192.168.33.12#{i}"
+      mvcible.vm.hostname = "mvcible#{i}"
+      mvcible.vm.provision "shell", inline: <<-SCRIPT
+        echo "vagrant ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+        apt-get update && apt-get install -y python
+      SCRIPT
+      config.vm.provider "virtualbox" do |v|
+      v.memory = 1024
+      end
+    end
   end
+
   config.vm.define :leader, primary: true do |leader|
     leader.vm.network :forwarded_port, host: 2201, guest: 22, id: "ssh", auto_correct: true
     leader.vm.network "private_network", ip: "192.168.33.101"
     leader.vm.hostname = "leader"
     leader.vm.provision "shell", path: "bootstrap.sh"
     leader.vm.provision "shell", inline: "ansible-playbook /vagrant/ansible/playjenkins.yml -c local"
-    leader.vm.provision "shell", inline: "ansible-playbook /vagrant/ansible/playnexus.yml"
+#    leader.vm.provision "shell", inline: "ansible-playbook /vagrant/ansible/playnexus.yml"
 #    leader.vm.provision "shell", inline: "ansible-playbook /vagrant/ansible/playgitlab.yml"
   end
+
   if Vagrant.has_plugin?("vagrant-cachier")
     config.cache.scope = :box
   end
