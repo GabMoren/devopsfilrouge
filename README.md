@@ -15,12 +15,12 @@ Vagrantfile crée 4 machines virtuelles :
 
 Pour lancer les machines il suffit de faire un `vagrant up`
 Utiliser `vagrant provision leader` pour relancer les playbooks ansible. Le playbook lancé au démarrage de la machine est le playjenkins.yml qui contient les rôles suivants :
-
+```
 - java
 - docker
 - registry
 - maven
-
+```
 ## Les playbook ansible
 Dans le dossier ansible de la racine du projet se trouvent tout les fichier yml plus les rôles respectives. Ce dossier est pressent dans toutes les machines virtuelles sur /vagrant/ansible.
 
